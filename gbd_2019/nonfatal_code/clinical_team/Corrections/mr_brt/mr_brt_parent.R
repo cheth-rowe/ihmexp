@@ -80,7 +80,7 @@ loadEstimates <- function() {
                    username = db_con$username,
                    password = db_con$pass,
                    host = db_con$host)
-  df <- dbGetQuery(con, sprintf("SELECT DISTINCT bundle_id, estimate_id FROM clinical.bundle"))
+  df <- dbGetQuery(QUERY)
   
   dbDisconnect(con)
   df <- data.table(df)

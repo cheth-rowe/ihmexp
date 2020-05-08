@@ -151,14 +151,14 @@ def qsub(slots, mem, name, path_to_script, env='root', sge_flags=None, script_ar
         else:
             e_path = e
     else:
-        e_path = '/dev/null'
+        e_path = 'FILEPATH'
     if o:
         if o is True:
             o_path = FILEPATH
         else:
             o_path = o
     else:
-        o_path = '/dev/null'
+        o_path = 'FILEPATH'
 
     # get the language straight. I never use the rshell right now.
     if lang == 'python':
@@ -173,7 +173,7 @@ def qsub(slots, mem, name, path_to_script, env='root', sge_flags=None, script_ar
     if hold_jid is not None:
         sge_flags += ['-hold_jid', hold_jid]
 
-    cmd = (['/usr/local/UGE/bin/lx-amd64/qsub',
+    cmd = (['FILEPATH',
             '-V',  # export environment variables to job context
             '-pe',  # parallel environment
             'multi_slot', slots,  # pe option slots request

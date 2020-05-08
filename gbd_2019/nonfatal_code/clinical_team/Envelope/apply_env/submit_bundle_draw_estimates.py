@@ -49,10 +49,10 @@ def ob_file_getter(run_id, for_reading=False):
     glob to get a list of filenames that are written to drive after job_holder says it's ok to stop waiting
     """
     base = FILEPATH.format(run_id)
-    ob_prep_files = glob.glob(base + "agg_5_years/pre_cf_bundle_draws/*.H5")
+    ob_prep_files = glob.glob(base + "FILEPATH")
     ob_prep_files = [os.path.basename(f) for f in ob_prep_files]
 
-    ob_final_files = glob.glob(base + "bundle_cfs/final/*.csv")
+    ob_final_files = glob.glob(base + "FILEPATH")
     if for_reading:
         return ob_final_files
 

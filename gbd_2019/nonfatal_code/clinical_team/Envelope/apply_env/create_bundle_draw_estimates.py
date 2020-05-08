@@ -332,12 +332,6 @@ def make_zeros(df, cols_to_square, run_id, etiology='bundle_id'):
     sexes = df.sex_id.unique()
     est_types = df['estimate_id'].unique().tolist()
 
-    # get all the unique bundles by source and location_id
-        # old method which doesn't work in parallel b/c we're processing only a subset
-        # of the fuller dataset
-            #src_loc = df[['source', 'location_id']].drop_duplicates()
-            #src_bundle = df[['source', etiology]].drop_duplicates()
-            #loc_bundle = src_bundle.merge(src_loc, how='outer', on='source')
     # new method which pulls in the loc bundle data from drive
     loc_bundle_path = FILEPATH.format(run_id)
     loc_bundle = pd.read_csv(loc_bundle_path)
@@ -350,10 +344,6 @@ def make_zeros(df, cols_to_square, run_id, etiology='bundle_id'):
 
     loc_years = df[['year_id', 'location_id']].drop_duplicates()
 
-    # this produced a bug in the squaring, use the full data from the end of the process
-    # similar problem to what happened above
-    # eti_est_df = df[[etiology, 'estimate_id']].drop_duplicates()
-    # eti_est_df['keep'] = 1
     eti_est_df = pd.read_csv(FILEPATH.format(run_id))
 
     sqr_df_list = []

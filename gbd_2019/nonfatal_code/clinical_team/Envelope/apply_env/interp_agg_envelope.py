@@ -18,11 +18,7 @@ import datetime
 import glob
 import warnings
 
-# Environment:
-if platform.system() == "Linux":
-    root = "/home/j"
-else:
-    root = "J:"
+root = "FILEPATH"
 
 # INTERPOLATE
 # doing both sexes and all years at once breaks. multiprocessing tries
@@ -220,7 +216,7 @@ def run_envelope_interp(write_both_envelopes, version_id):
 
     if write_both_envelopes:
         # NOTE, old key was "table"
-        env_df.to_hdf("/ihme/hospital/envelopes/interp_hosp_env_draws_v{}_{}.H5".\
+        env_df.to_hdf(FILEPATH.\
                       format(version_id, today),
                       key='df', complib='blosc', complevel=5, mode='w')
 
@@ -230,7 +226,7 @@ def run_envelope_interp(write_both_envelopes, version_id):
                          'year_start', 'year_end',
                          'mean', 'upper', 'lower']]
 
-        env_df.to_csv("/ihme/hospital/envelopes/interp_hosp_env_v{}_{}.csv".\
+        env_df.to_csv(FILEPATH.\
                       format(version_id, today),
                       index=False)
     return(env_df)
@@ -311,7 +307,7 @@ def stgpr_formatter(fpath, write_both_envelopes):
 
     if write_both_envelopes:
         test_stgpr(df, test_level='draw')
-        df.to_hdf("/ihme/hospital/envelopes/interp_hosp_env_draws_stgpr_m{}_{}.H5".format(model_id, today),
+        df.to_hdf(FILEPATH.format(model_id, today),
                   key='df', complib='blosc', complevel=5, mode='w')
 
         # keep only needed columns
@@ -321,7 +317,7 @@ def stgpr_formatter(fpath, write_both_envelopes):
                  'mean', 'upper', 'lower']]
 
         test_stgpr(df, test_level='agg')
-        df.to_csv("/ihme/hospital/envelopes/interp_hosp_env_stgpr_m{}_{}.csv".format(model_id, today),
+        df.to_csv(FILEPATH.format(model_id, today),
                   index=False)
 
     return df
@@ -338,21 +334,21 @@ def test_stgpr(df, test_level):
     """
     # the import part here is that the envelope demographic values match our hospital data
     # read in condensed demo info
-    write_vers = pd.read_csv(root + r"/temp/hospital/2016/data/version_log.csv")
+    write_vers = pd.read_csv(root + r"FILEPATH)
     write_vers = int(write_vers['version'].max()) + 1
     hosp_demo = pd.read_csv(\
-        "/ihme/hospital/envelopes/test_data/hosp_v{}_demographics.csv".format(write_vers))
+        FILEPATH.format(write_vers))
     if 'year_id' in hosp_demo.columns:
         hosp_demo['year_start'], hosp_demo['year_end'] = hosp_demo['year_id'], hosp_demo['year_id']
         hosp_demo.drop('year_id', axis=1, inplace=True)
 
     # use these two dataframes of the envelope to check our stgpr results against
-    draw_df = "/ihme/hospital/envelopes/interp_hosp_env_draws_2017_12_15.H5"
+    draw_df = FILEPATH
     draw_df = pd.read_hdf(draw_df, start=0, stop=10)
     # there are some cols we don't want, drop them
     draw_df.drop(['n_draws', 'modelable_entity_id', 'measure_id'], axis=1, inplace=True)
 
-    test_df = "/ihme/hospital/envelopes/interp_hosp_env_2017_12_15.csv"
+    test_df = FILEPATH
     test_df = pd.read_csv(test_df)
 
     # checking column names
@@ -382,7 +378,7 @@ def test_stgpr(df, test_level):
 if __name__ == '__main__':
 
     # this should be universal
-    write_input = eval(input("Should the envelope be written to /share/hospital/envelopes, yes or no?"))
+    write_input = eval(input("Should the envelope be written to FILEPATH, yes or no?"))
 
     if write_input in ['yes', 'Yes', 'y', 'YES']:
         write_input = True

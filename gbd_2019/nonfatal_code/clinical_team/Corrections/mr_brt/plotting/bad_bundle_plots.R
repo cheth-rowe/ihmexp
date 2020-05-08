@@ -10,7 +10,7 @@ for(bundle in unique(df$bundle_id)){
     max_age <- max(train_data[w == 1]$age_start)
     a <- tryCatch(all_cfs <- rbindlist(lapply(cfs, function(cf){
       #print(cf)
-      dt <- fread(paste0(FILEAPTH, cf, '/', bundle, '/mr_brt_mod/model_summaries.csv'))
+      dt <- fread(paste0(FILEAPTH))
       dt[, cf_num := cf]
       dt[cf_num == 'cf1', Y_mean := inv.logit(Y_mean)][cf_num == 'cf1', Y_mean_lo := inv.logit(Y_mean_lo)][cf_num == 'cf1', Y_mean_hi := inv.logit(Y_mean_hi)]
       dt[cf_num != 'cf1', Y_mean := exp(Y_mean)][cf_num != 'cf1', Y_mean_lo := exp(Y_mean_lo)][cf_num != 'cf1', Y_mean_hi := exp(Y_mean_hi)]

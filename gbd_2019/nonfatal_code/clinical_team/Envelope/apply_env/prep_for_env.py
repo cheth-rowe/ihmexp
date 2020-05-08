@@ -37,7 +37,7 @@ def split_sources(df, gbd_round_id, decomp_step):
 
     This will be passed to PopEstimates to create population level rates
     """
-    warnings.warn("We need to update /Envelope/prep_for_env.split_sources() to use the new DATABASE tables" * 10)
+
 
     # Make list of sources that we don't want to use envelope.  This should be
     # the source in the 'source' column of the dataframe
@@ -60,11 +60,7 @@ def split_sources(df, gbd_round_id, decomp_step):
 
 def apply_restricts(df, full_coverage_df):
     """
-    TODO at some point, REI restrictions should be applied as well.
 
-    NOTE it is okay to apply corrections after cause fractions, because
-    restrictions were also applied before the cause fractions were made
-    (right before splitting) because 
     """
 
     df = cm.apply_restrictions(df,

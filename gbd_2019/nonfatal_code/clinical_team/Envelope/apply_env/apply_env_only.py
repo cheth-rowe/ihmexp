@@ -113,13 +113,6 @@ def apply_envelope_only(df, env_path, run_id, gbd_round_id, decomp_step, return_
     ###############################################
     # APPLY CAUSE RESTRICTIONS
     ###############################################
-
-    # TODO at some point, REI restrictions should be applied as well.
-
-    # NOTE is is okay to apply corrections after cause fractions, because
-    # restrictions were also applied before the cause fractions were made
-    # (right before splitting) because wanted it applied in more than
-    # one place.
     if apply_age_sex_restrictions:
         df = clinical_mapping.apply_restrictions(df, age_set='age_group_id',
                                                  cause_type='icg', prod=False)
@@ -206,16 +199,6 @@ def apply_envelope_only(df, env_path, run_id, gbd_round_id, decomp_step, return_
         inj_bundle = list(inj_bundle['Level1-Bundle ID'])
         df = df[df['bundle_id'].isin(inj_bundle)]
 
-
-    # Drop columns we don't need anymore:
-    #   cause fraction: finished using it, was used to make product
-    #   mean: finished using it, was used to make product
-    #   upper: finished using, it was used ot make product_upper
-    #   lower: finished using, it was used ot make product_lower
-    #   val, numerator, denomantor: no longer in count space
-    #
-    #   NON FATAL_CAUSE_NAME IS LEFT TO SIGNIFY THAT THIS DATA IS STILL AT THE
-    #   ICG_ID LEVEL
     if apply_env_subroutine:
         df.drop(['cause_fraction','mean', 'upper', 'lower'], axis=1, inplace=True)
         df.rename(columns={'product': 'mean',
